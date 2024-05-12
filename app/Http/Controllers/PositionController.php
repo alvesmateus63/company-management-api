@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Department;
+use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class DepartmentController extends Controller
+class PositionController extends Controller
 {
 
     public function index()
     {
-        $departments = Department::all();
-        return response()->json($departments);
+        $positions = Position::all();
+        return response()->json($positions);
     }
 
     public function store(Request $request)
@@ -24,46 +24,45 @@ class DepartmentController extends Controller
                 'description' => 'required|string',
             ]);
     
-            $department = Department::create($validatedData);
+            $position = Position::create($validatedData);
         
-            $department->save();
+            $position->save();
 
-            return response()->json("Successfully registered department", 201);
+            return response()->json("Successfully registered position", 201);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error occurred while processing the request.'], 500);
         }
-
     }
 
     public function show(string $id)
     {
-        $department = Department::find($id);
+        $position = Position::find($id);
 
-        return response()->json($department);
+        return response()->json($position);
     }
 
     public function update(Request $request, string $id)
     {
         try {
-            $department = Department::find($id);
+            $postition = Position::find($id);
 
-            if (!$department) {
+            if (!$postition) {
                 return response()->json(['message' => 'Departamento não encontrado'], 404);
             }
         
             if ($request->filled('name')) {
-                $department->name = $request->name;
+                $postition->name = $request->name;
             }
         
             if ($request->filled('description')) {
-                $department->description = $request->description;
+                $postition->description = $request->description;
             }
 
-            $department->save();
+            $postition->save();
 
-            return response()->json("Department Updated Successfully", 201);
+            return response()->json("Position Updated Successfully", 201);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
@@ -74,11 +73,11 @@ class DepartmentController extends Controller
     public function destroy(string $id)
     {
         try {
-            $department = Department::find($id);
+            $position = Position::find($id);
             
-            $department->delete();
+            $position->delete();
 
-            return response()->json("Department Delete Successfully", 201);
+            return response()->json("Position Delete Successfully", 201);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
